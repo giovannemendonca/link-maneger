@@ -7,8 +7,8 @@ export const globalStyles =  globalCss({
     boxSizing: 'border-box'
   },
   body: {
-    backgroundColor: '#1E293B',
-    color: '$gray100',
+    backgroundColor: '$gray900',  
+    color: '$white',
     "--webkit-font-smoothing": "antialiased",
   },
   "body, input, textarea, button": {

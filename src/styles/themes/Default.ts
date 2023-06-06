@@ -22,9 +22,6 @@ export const defaultTheme = createTheme({
       main: "#0081B9",
       light: "#0081B970",
     },
-    background: {
-      default: '#1E293B'
-    },
     error: {
       main: '#940000'
     }

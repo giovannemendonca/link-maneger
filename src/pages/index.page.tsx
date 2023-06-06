@@ -1,13 +1,11 @@
-import { Button } from "@mui/material";
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 export default function Home() {
-  return (
-    <>
-      <h2>NextJS</h2>
-      <div>
-        <Button variant="contained">Hello World</Button>
-        
-      </div>
-    </>
-  );
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push('/auth/login')
+  })
+  return <></>
 }
