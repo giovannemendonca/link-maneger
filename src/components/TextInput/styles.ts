@@ -11,5 +11,4 @@ export const Input = styled(TextField, {
   color: '$white',
   width: '100%',
 
-  
 })

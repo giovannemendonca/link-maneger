@@ -1,47 +1,104 @@
 import React from 'react'
+import { Text } from '@/components/Text'
+import { TextInput } from '@/components/TextInput'
+import { Heading } from '@/components/Heading'
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { any, z } from 'zod'
 import {
   Account,
   Container,
   ContainerBox,
   ContainerItem,
   Form,
+  FormsErros,
   Link,
   ResetPassword
 } from './styles'
-import { Text } from '@/components/Text'
-import { TextInput } from '@/components/TextInput'
-import { Button } from '@mui/material'
-import { Heading } from '@/components/Heading'
+import { api } from '@/lib/axios'
+import { Button } from '@/components/Button'
+
+const formLoginScrema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres')
+})
+
+type FormLoginSchema = z.infer<typeof formLoginScrema>
 
 export default function Login() {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<FormLoginSchema>({
+    resolver: zodResolver(formLoginScrema)
+  })
+
+  const handlerLogin = async (dataForm: FormLoginSchema) => {
+    try {
+      const response = await api.post('/auth/login', {
+        email: dataForm.email,
+        password: dataForm.password
+      })
+      console.log(response)
+    
+    } catch (error: any) {
+      alert(error?.response.data.error)
+    }
+  }
+
   return (
     <Container>
       <ContainerBox>
         <Heading as='h2'>Login</Heading>
-        <Form>
+        <Form onSubmit={handleSubmit(handlerLogin)}>
           <ContainerItem>
             <Text>Email</Text>
-            <TextInput
-              placeholder='Email'
-              fullWidth
+            <Controller
+              control={control}
+              name='email'
+              defaultValue=''
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  placeholder='Email'
+                  fullWidth
+                />
+              )}
             />
+            {errors.email?.message && (
+              <FormsErros>{errors.email?.message}</FormsErros>
+            )}
           </ContainerItem>
           <ContainerItem>
             <Text>Senha</Text>
-            <TextInput
-              placeholder='senha'
-              type='password'
-              fullWidth
+            <Controller
+              control={control}
+              name='password'
+              defaultValue=''
+              render={({ field }) => (
+                <TextInput
+                  {...field}
+                  placeholder='senha'
+                  type='password'
+                  fullWidth
+                />
+              )}
             />
+            {errors.password?.message && (
+              <FormsErros>{errors.password?.message}</FormsErros>
+            )}
           </ContainerItem>
           <ResetPassword>
             <Text>Esqueceu a senha?</Text>
             <Link>recuperar</Link>
           </ResetPassword>
           <Button
+            type='submit'
             variant='contained'
             color='primary'
             fullWidth
+            disabled={isSubmitting}
           >
             Entrar
           </Button>
@@ -49,7 +106,7 @@ export default function Login() {
         <Account>
           Não tem uma conta?
           <Link>Criar</Link>
-          </Account>
+        </Account>
       </ContainerBox>
     </Container>
   )

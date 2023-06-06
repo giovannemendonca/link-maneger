@@ -20,7 +20,7 @@ export const ContainerBox = styled(Box, {
   maxWidth: 572,
 
 
-  '@media (max-width: 520px)': {
+  '@media (max-width: 620px)': {
     width: '100%',
     height: '100vh',
 
@@ -60,4 +60,8 @@ export const Account = styled(Text, {
   display: 'flex',
   justifyContent: 'center',
   gap: '$2'
+})
+
+export const FormsErros = styled(Text, {
+  color: '#F75A68',
 })

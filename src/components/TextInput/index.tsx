@@ -1,12 +1,19 @@
-import { ComponentProps } from 'react'
-import { Input } from './styles'
+import { ComponentProps, forwardRef } from 'react'
+import {Input} from './styles'
 
 export type TextInputProps = ComponentProps<typeof Input>
 
-export function TextInput({...props}: TextInputProps) {
-  return <Input  {...props} size='small' inputProps={{
-    style: {
-      color: '#fff',
-    }
-  }}/>
-}
+export const TextInput = forwardRef<HTMLInputElement, TextInputProps>((props, ref) => {
+  return (
+    <Input
+      {...props}
+      size='small'
+      inputProps={{
+        style: {
+          color: '#fff'
+        }
+      }}
+      inputRef={ref} // Passa a ref para o TextField
+    />
+  )
+})
