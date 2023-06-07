@@ -18,6 +18,7 @@ import {
 import { api } from '@/lib/axios'
 import { Button } from '@/components/Button'
 import { useRouter } from 'next/router'
+import useFetch from '@/hooks/useFecth'
 
 const formLoginScrema = z.object({
   email: z.string().email('Email inválido'),
@@ -35,19 +36,17 @@ export default function Login() {
     resolver: zodResolver(formLoginScrema)
   })
 
-  const handlerLogin = async (dataForm: FormLoginSchema) => {
-    try {
-      const response = await api.post('/auth/login', {
-        email: dataForm.email,
-        password: dataForm.password
-      })
-      console.log(response)
-      alert('Usuário logado com sucesso')
-    } catch (error: any) {
-      alert(error?.response.data.error)
-    }
-  }
+  const { data, fetchData, isLoading, error } = useFetch()
 
+  const handlerLogin = async (dataForm: FormLoginSchema) => {
+    const payload = {
+      email: dataForm.email,
+      password: dataForm.password
+    }
+    await fetchData('/auth/login', 'post', {
+      data: payload
+    })
+  }
   const router = useRouter()
 
   const forgotPassword = () => {
@@ -113,6 +112,9 @@ export default function Login() {
           >
             Entrar
           </Button>
+          {isLoading && <Text>esta logando...</Text>}
+          {data && <Text>Logado com sucesso</Text>}
+          {error && <FormsErros>Erro ao logar</FormsErros>}
         </Form>
         <Account>
           Não tem uma conta?
