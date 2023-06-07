@@ -1,6 +1,6 @@
 import { Box } from '@/components/Box'
 import { Button } from '@/components/Button'
-import useFetch from '@/hooks/useFecth'
+import useFetch from '@/hooks/useFetch'
 import React from 'react'
 
 export default function Tests() {

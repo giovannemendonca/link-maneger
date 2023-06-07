@@ -15,10 +15,9 @@ import {
   Link,
   ResetPassword
 } from './styles'
-import { api } from '@/lib/axios'
 import { Button } from '@/components/Button'
 import { useRouter } from 'next/router'
-import useFetch from '@/hooks/useFecth'
+import useFetch from '@/hooks/useFetch'
 
 const formLoginScrema = z.object({
   email: z.string().email('Email inválido'),
