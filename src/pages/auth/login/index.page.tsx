@@ -4,7 +4,7 @@ import { TextInput } from '@/components/TextInput'
 import { Heading } from '@/components/Heading'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { any, z } from 'zod'
+import { z } from 'zod'
 import {
   Account,
   Container,
@@ -17,6 +17,7 @@ import {
 } from './styles'
 import { api } from '@/lib/axios'
 import { Button } from '@/components/Button'
+import { useRouter } from 'next/router'
 
 const formLoginScrema = z.object({
   email: z.string().email('Email inválido'),
@@ -41,10 +42,20 @@ export default function Login() {
         password: dataForm.password
       })
       console.log(response)
-    
+      alert('Usuário logado com sucesso')
     } catch (error: any) {
       alert(error?.response.data.error)
     }
+  }
+
+  const router = useRouter()
+
+  const forgotPassword = () => {
+    router.push('/auth/forgot-password')
+  }
+
+  const createAccount = () => {
+    router.push('/users/register')
   }
 
   return (
@@ -91,7 +102,7 @@ export default function Login() {
           </ContainerItem>
           <ResetPassword>
             <Text>Esqueceu a senha?</Text>
-            <Link>recuperar</Link>
+            <Link onClick={forgotPassword}>recuperar</Link>
           </ResetPassword>
           <Button
             type='submit'
@@ -105,7 +116,7 @@ export default function Login() {
         </Form>
         <Account>
           Não tem uma conta?
-          <Link>Criar</Link>
+          <Link onClick={createAccount}>Criar</Link>
         </Account>
       </ContainerBox>
     </Container>
