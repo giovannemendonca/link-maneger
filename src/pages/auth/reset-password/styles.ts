@@ -8,7 +8,7 @@ export const Container = styled('div', {
   alignItems: 'center',
 
   width: '100%',
-  height: '100vh'
+  height: 'calc(100vh - 80px)'
 })
 
 export const ContainerBox = styled(Box, {
@@ -19,10 +19,9 @@ export const ContainerBox = styled(Box, {
   flex: 1,
   maxWidth: 572,
 
-
   '@media (max-width: 620px)': {
     width: '100%',
-    height: '100vh',
+    height: 'calc(100vh - 80px)',
 
     borderRadius: 0,
     paddingTop: '$16'
@@ -45,11 +44,10 @@ export const Link = styled('span', {
   color: '#008F8970',
   width: 'fit-content',
 
-
   '&:hover': {
     color: '$green300'
   }
 })
 export const FormsErros = styled(Text, {
-  color: '#F75A68',
+  color: '#F75A68'
 })

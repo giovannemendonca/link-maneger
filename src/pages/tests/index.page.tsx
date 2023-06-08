@@ -1,52 +1,40 @@
-import { Box } from '@/components/Box'
-import { Button } from '@/components/Button'
-import { Alert, AlertTitle, Collapse, Snackbar } from '@mui/material'
-import { useSnackbar } from 'notistack'
-import React, { useState } from 'react'
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography
+} from '@mui/material'
+import MenuIcon from '@mui/icons-material/Menu'
 
-export default function Tests() {
-  /*  const [open, setOpen] = useState<boolean>(false) */
-
-  const { enqueueSnackbar } = useSnackbar()
-
-  const handlerClick = () => {
-    enqueueSnackbar('Sucesso', {
-      variant: 'success'
-    })
-  }
-
+const Page = () => {
   return (
-    <Box
-      css={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 8
-      }}
-    >
-      <Button
-        variant='contained'
-        onClick={handlerClick }
-        /*         onClick={() => setOpen(true)} */
-      >
-        Login
-      </Button>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position='static'>
+        <Toolbar>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+          >
+            News
+          </Typography>
+          <Button color='inherit'>Login</Button>
 
-      {/*  <Snackbar
-        open={open}
-        message='Alerta Snackbar'
-        autoHideDuration={3000}
-        onClose={() => setOpen(false)}
-      >
-        <Alert
-          variant='filled'
-          onClose={() => setOpen(false)}
-          severity='error'
-        >
-          <AlertTitle>Error</AlertTitle>
-          Error ao realizar o Login
-        </Alert>
-      </Snackbar> */}
+          <IconButton
+            size='large'
+            edge='start'
+            color='inherit'
+            aria-label='menu'
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
     </Box>
   )
 }
+
+export default Page

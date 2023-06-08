@@ -23,6 +23,7 @@ import {
   ResetPassword
 } from './styles'
 import { CircularProgress } from '@mui/material'
+import NaveBar from '@/components/NavBar'
 
 const formLoginSchema = z.object({
   email: z.string().email('Email inválido'),

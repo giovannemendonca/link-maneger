@@ -8,7 +8,9 @@ export const Container = styled('div', {
   alignItems: 'center',
 
   width: '100%',
-  height: '100vh'
+  height: 'calc(100vh - 60px)',
+  flex: 1,
+  boxSizing: 'border-box',
 })
 
 export const ContainerBox = styled(Box, {
@@ -22,7 +24,7 @@ export const ContainerBox = styled(Box, {
 
   '@media (max-width: 620px)': {
     width: '100%',
-    height: '100vh',
+    height: '100%',
 
     borderRadius: 0,
     paddingTop: '$16'

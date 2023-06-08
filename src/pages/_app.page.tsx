@@ -1,3 +1,4 @@
+import NaveBar from '@/components/NavBar'
 import { globalStyles } from '@/styles/global'
 import { defaultTheme } from '@/styles/themes/Default'
 import { ThemeProvider } from '@emotion/react'
@@ -13,6 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
           maxSnack={3}
           autoHideDuration={3000}
         >
+          <NaveBar />
           <Component {...pageProps} />
         </SnackbarProvider>
       </ThemeProvider>
