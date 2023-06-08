@@ -1,16 +1,16 @@
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useSnackbar } from 'notistack';
+import React from 'react'
+import { useForm, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import { useSnackbar } from 'notistack'
 
-import { Text } from '@/components/Text';
-import { TextInput } from '@/components/TextInput';
-import { Heading } from '@/components/Heading';
-import { Button } from '@/components/Button';
+import { Text } from '@/components/Text'
+import { TextInput } from '@/components/TextInput'
+import { Heading } from '@/components/Heading'
+import { Button } from '@/components/Button'
 
-import useFetch from '@/hooks/useFetch';
-import { useRouter } from 'next/router';
+import useFetch from '@/hooks/useFetch'
+import { useRouter } from 'next/router'
 
 import {
   Account,
@@ -21,19 +21,20 @@ import {
   FormsErros,
   Link,
   ResetPassword
-} from './styles';
+} from './styles'
+import { CircularProgress } from '@mui/material'
 
 const formLoginSchema = z.object({
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'Senha deve ter no mínimo 6 caracteres')
-});
+})
 
-type FormLoginData = z.infer<typeof formLoginSchema>;
+type FormLoginData = z.infer<typeof formLoginSchema>
 
 export default function Login() {
-  const { enqueueSnackbar } = useSnackbar();
-  const { fetchData } = useFetch();
-  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar()
+  const { fetchData } = useFetch()
+  const router = useRouter()
 
   const {
     control,
@@ -41,37 +42,37 @@ export default function Login() {
     formState: { errors, isSubmitting }
   } = useForm<FormLoginData>({
     resolver: zodResolver(formLoginSchema)
-  });
+  })
 
   const handleLogin = async (formData: FormLoginData) => {
     const payload = {
       email: formData.email,
       password: formData.password
-    };
+    }
 
     const response = await fetchData('/auth/login', 'post', {
       data: payload
-    });
+    })
 
     if (response) {
       enqueueSnackbar('Login realizado com sucesso', {
         variant: 'success'
-      });
-      router.push('/dashboard');
-    } else{
+      })
+      router.push('/dashboard')
+    } else {
       enqueueSnackbar('Erro ao realizar login', {
         variant: 'error'
-      });
+      })
     }
-  };
+  }
 
   const handleForgotPassword = () => {
-    router.push('/auth/forgot-password');
-  };
+    router.push('/auth/forgot-password')
+  }
 
   const handleCreateAccount = () => {
-    router.push('/users/register');
-  };
+    router.push('/users/register')
+  }
 
   return (
     <Container>
@@ -93,9 +94,7 @@ export default function Login() {
                 />
               )}
             />
-            {errors.email && (
-              <FormsErros>{errors.email.message}</FormsErros>
-            )}
+            {errors.email && <FormsErros>{errors.email.message}</FormsErros>}
           </ContainerItem>
           <ContainerItem>
             <Text>Senha</Text>
@@ -128,7 +127,14 @@ export default function Login() {
             fullWidth
             disabled={isSubmitting}
           >
-            Entrar
+            {isSubmitting ? (
+              <CircularProgress
+                size={25}
+                color='primary'
+              />
+            ) : (
+              'Entrar'
+            )}
           </Button>
         </Form>
         <Account>
@@ -137,5 +143,5 @@ export default function Login() {
         </Account>
       </ContainerBox>
     </Container>
-  );
+  )
 }
