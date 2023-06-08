@@ -16,6 +16,7 @@ import {
   Link
 } from './styles'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 
 const registerUserScrema = z
   .object({
@@ -32,6 +33,9 @@ const registerUserScrema = z
 type RegisterUserSchema = z.infer<typeof registerUserScrema>
 
 export default function registerUser() {
+  const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
+
   const {
     control,
     handleSubmit,
@@ -39,22 +43,22 @@ export default function registerUser() {
   } = useForm<RegisterUserSchema>({
     resolver: zodResolver(registerUserScrema)
   })
-  const router = useRouter()
 
   const handlerResetPassword = async (dataForm: RegisterUserSchema) => {
     try {
-      const response = await api.post('/users', {
+      await api.post('/users', {
         name: dataForm.name,
         email: dataForm.email,
         password: dataForm.password
       })
-      console.log(response)
-      alert('Usuário criado com sucesso')
+      enqueueSnackbar('Usuário criado com sucesso', {
+        variant: 'success'
+      })
       router.push('/auth/login')
-
     } catch (error: any) {
-      console.log(error)
-      alert(error?.response?.data?.error)
+      enqueueSnackbar(error.response.data.message, {
+        variant: 'error'
+      })
     }
   }
 
@@ -68,7 +72,6 @@ export default function registerUser() {
         <Heading as='h2'>Criar Conta</Heading>
 
         <Form onSubmit={handleSubmit(handlerResetPassword)}>
-
           <ContainerItem>
             <Text>Nome</Text>
             <Controller
@@ -107,7 +110,7 @@ export default function registerUser() {
               <FormsErros>{errors.email?.message}</FormsErros>
             )}
           </ContainerItem>
-          
+
           <ContainerItem>
             <Text>Password</Text>
             <Controller

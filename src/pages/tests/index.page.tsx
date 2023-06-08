@@ -1,33 +1,52 @@
 import { Box } from '@/components/Box'
 import { Button } from '@/components/Button'
-import useFetch from '@/hooks/useFetch'
-import React from 'react'
+import { Alert, AlertTitle, Collapse, Snackbar } from '@mui/material'
+import { useSnackbar } from 'notistack'
+import React, { useState } from 'react'
 
 export default function Tests() {
-  const { data, error, fetchData, isLoading } = useFetch()
+  /*  const [open, setOpen] = useState<boolean>(false) */
 
-  const handlerTest = async () => {
-    await fetchData(
-      'https://servicodados.ibge.gov.br/api/v1/localidades/estados/CE/microrregioes'
-    )
-    console.log(data)
+  const { enqueueSnackbar } = useSnackbar()
+
+  const handlerClick = () => {
+    enqueueSnackbar('Sucesso', {
+      variant: 'success'
+    })
   }
 
   return (
     <Box
       css={{
+        height: '100vh',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
+        flexDirection: 'column',
+        gap: 8
       }}
     >
       <Button
-        onClick={handlerTest}
         variant='contained'
+        onClick={handlerClick }
+        /*         onClick={() => setOpen(true)} */
       >
-        Testa função
+        Login
       </Button>
+
+      {/*  <Snackbar
+        open={open}
+        message='Alerta Snackbar'
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          variant='filled'
+          onClose={() => setOpen(false)}
+          severity='error'
+        >
+          <AlertTitle>Error</AlertTitle>
+          Error ao realizar o Login
+        </Alert>
+      </Snackbar> */}
     </Box>
   )
 }

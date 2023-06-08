@@ -16,6 +16,7 @@ import {
   Link
 } from './styles'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 
 const forgotPasswordScrema = z.object({
   email: z.string().email('Email inválido')
@@ -25,6 +26,7 @@ type ForgotPasswordSchema = z.infer<typeof forgotPasswordScrema>
 
 export default function ForgotPassword() {
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
 
   const {
     control,
@@ -39,9 +41,14 @@ export default function ForgotPassword() {
       await api.post('auth/forgot_password', {
         email: dataForm.email
       })
+      enqueueSnackbar('Email enviado com sucesso', {
+        variant: 'success'  
+      })
       router.push('/auth/reset-password')
     } catch (error: any) {
-      alert(error?.response?.data?.error)
+      enqueueSnackbar('Erro ao enviar email', {
+        variant: 'error'
+      })
     }
   }
 

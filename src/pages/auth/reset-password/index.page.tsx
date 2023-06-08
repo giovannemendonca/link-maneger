@@ -16,6 +16,7 @@ import {
   Link
 } from './styles'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
 
 const resetPasswordScrema = z
   .object({
@@ -32,6 +33,10 @@ const resetPasswordScrema = z
 type ResetPasswordSchema = z.infer<typeof resetPasswordScrema>
 
 export default function ForgotPassword() {
+
+  const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
+
   const {
     control,
     handleSubmit,
@@ -39,7 +44,6 @@ export default function ForgotPassword() {
   } = useForm<ResetPasswordSchema>({
     resolver: zodResolver(resetPasswordScrema)
   })
-  const router = useRouter()
 
   const handlerResetPassword = async (dataForm: ResetPasswordSchema) => {
     try {
@@ -48,13 +52,15 @@ export default function ForgotPassword() {
         token: dataForm.token,
         password: dataForm.password
       })
-      console.log(response)
-      alert('Senha alterada com sucesso')
+      enqueueSnackbar('Senha alterada com sucesso', {
+        variant: 'success'
+      })
       router.push('/auth/login')
 
     } catch (error: any) {
-      console.log(error)
-      alert(error?.response?.data?.error)
+      enqueueSnackbar('Erro ao alterar senha', {
+        variant: 'error'
+      })
     }
   }
 

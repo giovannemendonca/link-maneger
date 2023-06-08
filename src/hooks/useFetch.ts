@@ -23,6 +23,7 @@ const useFetch = () => {
       })
       setData(response.data)
       setError('')
+      return response.data
     } catch (error) {
       setError('Ocorreu um erro ao obter os dados.')
     } finally {
