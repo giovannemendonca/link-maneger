@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { use, useContext, useEffect } from 'react'
+import { CircularProgress } from '@mui/material'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -22,8 +23,8 @@ import {
   Link,
   ResetPassword
 } from './styles'
-import { CircularProgress } from '@mui/material'
-import NaveBar from '@/components/NavBar'
+import useLocalStorage from '@/hooks/useLocalStorage'
+import { UserContext, UserInteface } from '@/context/UseContext'
 
 const formLoginSchema = z.object({
   email: z.string().email('Email inválido'),
@@ -37,12 +38,30 @@ export default function Login() {
   const { fetchData } = useFetch()
   const router = useRouter()
 
+  const [, setUser] = useLocalStorage<UserInteface | null>('user', null)
+  const [, setToken] = useLocalStorage<string | null>('token', null)
+
+  const { handleSetUser } = useContext(UserContext)
+
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<FormLoginData>({
     resolver: zodResolver(formLoginSchema)
+  })
+
+  useEffect(() => {
+    let user: UserInteface | null = null
+    const hasUser = localStorage.getItem('user')
+
+    if (hasUser) {
+      user = JSON.parse(hasUser)
+
+      if (user?.id) {
+        router.push('/dashboard')
+      }
+    }
   })
 
   const handleLogin = async (formData: FormLoginData) => {
@@ -56,6 +75,11 @@ export default function Login() {
     })
 
     if (response) {
+      const { user, token } = response
+      setUser(user)
+      setToken(token)
+      handleSetUser(user)
+
       enqueueSnackbar('Login realizado com sucesso', {
         variant: 'success'
       })
