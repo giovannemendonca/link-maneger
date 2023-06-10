@@ -44,7 +44,8 @@ const NaveBar = () => {
             component='div'
             sx={{ flexGrow: 1, cursor: 'pointer' }}
           >
-            {isMobile ? <Text>Menu</Text> : <Text>Link maneger</Text>}
+            {(isMobile && user?.id) && <Text>Menu</Text>}
+            {!isMobile && user?.id && <Text>Links maneger</Text>}
           </Typography>
           {!user?.id && (
             <>
